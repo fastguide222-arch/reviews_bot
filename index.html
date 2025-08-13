@@ -2,150 +2,184 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Отзывы о каналах</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-    body {
-        font-family: 'Inter', sans-serif;
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
-        background: linear-gradient(135deg, #74ebd5, #ACB6E5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .container {
-        background-color: #ffffff;
-        width: 400px;
-        max-width: 90%;
-        border-radius: 20px;
-        padding: 30px;
-        box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-        transition: all 0.3s ease;
-    }
-
-    h2 {
-        text-align: center;
-        margin-bottom: 30px;
-        color: #2f3640;
-    }
-
-    .step {
-        display: none;
-        animation: fadeIn 0.5s ease;
-    }
-
-    .step.active {
-        display: block;
-    }
-
-    label {
-        display: block;
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: #2f3640;
-    }
-
-    select, textarea {
-        width: 100%;
-        padding: 10px 12px;
-        border-radius: 12px;
-        border: 1px solid #dcdde1;
-        margin-bottom: 20px;
-        font-size: 14px;
-        outline: none;
-        transition: all 0.2s;
-    }
-
-    select:focus, textarea:focus {
-        border-color: #00a8ff;
-    }
-
-    textarea {
-        resize: vertical;
-        min-height: 120px;
-    }
-
-    .buttons {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    button {
-        padding: 12px 20px;
-        border: none;
-        border-radius: 12px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 14px;
-        transition: 0.3s;
-        color: #fff;
-    }
-
-    button.next {
-        background-color: #00a8ff;
-    }
-
-    button.next:hover {
-        background-color: #0097e6;
-    }
-
-    button.prev {
-        background-color: #aaa;
-    }
-
-    button.prev:hover {
-        background-color: #888;
-    }
-
-    @keyframes fadeIn {
-        from {opacity:0;}
-        to {opacity:1;}
-    }
+:root{
+    --bg:#030305;
+    --panel:#0d0d0f;
+    --muted:#9aa0a6;
+    --accent:#2ac26b;
+    --accent-2:#21a858;
+    --card-shadow:0 20px 50px rgba(0,0,0,0.55);
+    --radius:14px;
+    --glass:rgba(255,255,255,0.02);
+    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+*{box-sizing:border-box}
+html,body{
+    height:100%;margin:0;
+    background:linear-gradient(180deg,var(--bg),#070708);
+    color:#fff;
+    -webkit-font-smoothing:antialiased;
+}
+.wrap{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:22px;
+}
+.app{
+    width:100%;
+    max-width:420px;
+    border-radius:20px;
+    background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);
+    box-shadow:var(--card-shadow);
+    overflow:hidden;
+}
+.top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 18px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-bottom:1px solid rgba(255,255,255,0.02);
+}
+.top .title{font-weight:700;font-size:16px}
+.top .sub{font-size:12px;color:var(--muted)}
+.card{
+    padding:18px;
+    background:linear-gradient(180deg,var(--panel), #0b0b0c);
+}
+.steps{
+    display:flex;align-items:center;gap:6px;margin-bottom:14px;
+}
+.step{
+    flex:1;text-align:center;
+    font-size:12px;color:var(--muted);
+}
+.step .dot{
+    width:34px;height:34px;border-radius:999px;margin:0 auto 8px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--glass);
+    border:1px solid rgba(255,255,255,0.04);
+    font-weight:700;color:var(--muted);
+}
+.step.active .dot{
+    background:linear-gradient(180deg,var(--accent),var(--accent-2));
+    color:#02120a;
+    box-shadow:0 8px 22px rgba(34,170,102,0.18);
+}
+.step.done .dot{
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.06);
+    color:var(--muted);
+}
+.heading{font-size:20px;font-weight:700;margin:6px 0 10px}
+.subhead{color:var(--muted);margin-bottom:14px;font-size:14px}
+select, textarea{
+    width:100%;
+    padding:10px 12px;
+    border-radius:var(--radius);
+    border:1px solid rgba(255,255,255,0.08);
+    background-color:var(--glass);
+    color:#fff;
+    font-size:14px;
+    margin-bottom:18px;
+    outline:none;
+}
+textarea{
+    resize:vertical;
+    min-height:100px;
+}
+button{
+    width:100%;
+    padding:12px;
+    border-radius:var(--radius);
+    border:none;
+    font-weight:700;
+    font-size:14px;
+    cursor:pointer;
+    color:#02120a;
+    background:linear-gradient(180deg,var(--accent),var(--accent-2));
+    box-shadow:0 4px 12px rgba(34,170,102,0.25);
+    transition:0.2s;
+}
+button:hover{
+    filter:brightness(1.05);
+}
+.buttons{
+    display:flex;
+    gap:10px;
+}
+button.prev{
+    background:rgba(255,255,255,0.08);
+    color:#fff;
+    box-shadow:none;
+}
+button.prev:hover{
+    background:rgba(255,255,255,0.15);
+}
+.step-content{display:none;}
+.step-content.active{display:block;animation:fadeIn 0.3s ease;}
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(10px);}
+    to{opacity:1;transform:translateY(0);}
+}
 </style>
 </head>
 <body>
-<div class="container">
-    <h2>Оставьте отзыв</h2>
-
-    <div class="step active" id="step1">
-        <label for="channel">Выберите канал:</label>
-        <select id="channel">
-            <option value="-1002526285031">Бизнес и маркетинг</option>
-            <option value="-1002716220445">Спорт и здоровье</option>
-            <option value="-1002651825180">Питание и диета</option>
-            <option value="-1002770818048">Образование и обучение</option>
-            <option value="-1002622247826">Творчество и контент</option>
-        </select>
-        <div class="buttons">
-            <div></div>
-            <button class="next" onclick="nextStep(1)">Далее →</button>
+<div class="wrap">
+    <div class="app">
+        <div class="top">
+            <div>
+                <div class="title">Оставьте отзыв</div>
+                <div class="sub">3 шага до отправки</div>
+            </div>
         </div>
-    </div>
+        <div class="card">
+            <div class="steps">
+                <div class="step active" id="s1"><div class="dot">1</div>Канал</div>
+                <div class="step" id="s2"><div class="dot">2</div>Оценка</div>
+                <div class="step" id="s3"><div class="dot">3</div>Отзыв</div>
+            </div>
 
-    <div class="step" id="step2">
-        <label for="rating">Выберите оценку:</label>
-        <select id="rating">
-            <option value="1">1⭐</option>
-            <option value="2">2⭐</option>
-            <option value="3">3⭐</option>
-            <option value="4">4⭐</option>
-            <option value="5">5⭐</option>
-        </select>
-        <div class="buttons">
-            <button class="prev" onclick="prevStep(2)">← Назад</button>
-            <button class="next" onclick="nextStep(2)">Далее →</button>
-        </div>
-    </div>
+            <div class="step-content active" id="step1">
+                <div class="heading">Выберите канал</div>
+                <select id="channel">
+                    <option value="-1002526285031">Бизнес и маркетинг</option>
+                    <option value="-1002716220445">Спорт и здоровье</option>
+                    <option value="-1002651825180">Питание и диета</option>
+                    <option value="-1002770818048">Образование и обучение</option>
+                    <option value="-1002622247826">Творчество и контент</option>
+                </select>
+                <button onclick="nextStep(1)">Далее →</button>
+            </div>
 
-    <div class="step" id="step3">
-        <label for="review">Напишите отзыв:</label>
-        <textarea id="review" placeholder="Минимум 70 символов"></textarea>
-        <div class="buttons">
-            <button class="prev" onclick="prevStep(3)">← Назад</button>
-            <button class="next" onclick="submitReview()">Отправить</button>
+            <div class="step-content" id="step2">
+                <div class="heading">Выберите оценку</div>
+                <select id="rating">
+                    <option value="1">1⭐</option>
+                    <option value="2">2⭐</option>
+                    <option value="3">3⭐</option>
+                    <option value="4">4⭐</option>
+                    <option value="5">5⭐</option>
+                </select>
+                <div class="buttons">
+                    <button class="prev" onclick="prevStep(2)">← Назад</button>
+                    <button onclick="nextStep(2)">Далее →</button>
+                </div>
+            </div>
+
+            <div class="step-content" id="step3">
+                <div class="heading">Напишите отзыв</div>
+                <textarea id="review" placeholder="Минимум 70 символов"></textarea>
+                <div class="buttons">
+                    <button class="prev" onclick="prevStep(3)">← Назад</button>
+                    <button onclick="submitReview()">Отправить</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -153,48 +187,50 @@
 <script>
 let currentStep = 1;
 
-function showStep(step) {
-    document.querySelectorAll('.step').forEach((el, index) => {
-        el.classList.remove('active');
+function setActiveStepUI(step){
+    document.querySelectorAll('.step-content').forEach(e=>e.classList.remove('active'));
+    document.querySelector('#step'+step).classList.add('active');
+
+    document.querySelectorAll('.steps .step').forEach((el,i)=>{
+        el.classList.remove('active','done');
+        if(i+1<step) el.classList.add('done');
+        else if(i+1===step) el.classList.add('active');
     });
-    document.getElementById('step' + step).classList.add('active');
 }
 
-function nextStep(step) {
-    currentStep = step + 1;
-    showStep(currentStep);
+function nextStep(step){
+    currentStep = step+1;
+    setActiveStepUI(currentStep);
 }
 
-function prevStep(step) {
-    currentStep = step - 1;
-    showStep(currentStep);
+function prevStep(step){
+    currentStep = step-1;
+    setActiveStepUI(currentStep);
 }
 
-function submitReview() {
+function submitReview(){
     const channel = document.getElementById('channel').value;
     const rating = parseInt(document.getElementById('rating').value);
     const review = document.getElementById('review').value.trim();
 
-    if (review.length < 70) {
+    if(review.length < 70){
         alert("Отзыв слишком короткий, минимум 70 символов.");
         return;
     }
 
     const data = { channel, rating, review };
 
-    fetch('https://YOUR_BACKEND_URL/send_review', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(result => {
+    fetch('https://YOUR_BACKEND_URL/send_review',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(data)
+    }).then(r=>r.json())
+      .then(res=>{
         alert("Спасибо за отзыв!");
-        document.getElementById('review').value = "";
-        currentStep = 1;
-        showStep(currentStep);
-    })
-    .catch(error => console.error('Ошибка:', error));
+        document.getElementById('review').value="";
+        currentStep=1;
+        setActiveStepUI(currentStep);
+    }).catch(err=>console.error(err));
 }
 </script>
 </body>
