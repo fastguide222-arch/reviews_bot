@@ -3,43 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <title>Отзывы о каналах</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; }
-        h2 { text-align: center; }
-        label { display: block; margin-top: 15px; }
-        select, textarea, button { width: 100%; padding: 8px; margin-top: 5px; }
-        .bold { font-weight: bold; }
-        .step { margin-top: 20px; padding: 10px; border: 1px solid #ccc; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f6fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            max-width: 500px;
+            width: 90%;
+            margin: 40px 0;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2f3640;
+            margin-bottom: 25px;
+        }
+
+        .step {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #f1f2f6;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2f3640;
+        }
+
+        select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #dcdde1;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #2f3640;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        select:focus, textarea:focus {
+            border-color: #00a8ff;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #00a8ff;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #0097e6;
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
-    <h2>Оставьте отзыв</h2>
+    <div class="container">
+        <h2>Оставьте отзыв</h2>
 
-    <div class="step" id="step1">Этап 1: Выберите канал</div>
-    <label for="channel">Канал:</label>
-    <select id="channel">
-        <option value="-1002526285031">Канал 1</option>
-        <option value="-1002716220445">Канал 2</option>
-        <option value="-1002651825180">Канал 3</option>
-        <option value="-1002770818048">Канал 4</option>
-        <option value="-1002622247826">Канал 5</option>
-    </select>
+        <div class="step" id="step1">
+            <label for="channel">Этап 1: Выберите канал</label>
+            <select id="channel">
+                <option value="-1002526285031">Бизнес и маркетинг</option>
+                <option value="-1002716220445">Спорт и здоровье</option>
+                <option value="-1002651825180">Питание и диета</option>
+                <option value="-1002770818048">Образование и обучение</option>
+                <option value="-1002622247826">Творчество и контент</option>
+            </select>
+        </div>
 
-    <div class="step" id="step2">Этап 2: Выберите оценку</div>
-    <label for="rating">Оценка:</label>
-    <select id="rating">
-        <option value="1">1⭐</option>
-        <option value="2">2⭐</option>
-        <option value="3">3⭐</option>
-        <option value="4">4⭐</option>
-        <option value="5">5⭐</option>
-    </select>
+        <div class="step" id="step2">
+            <label for="rating">Этап 2: Выберите оценку</label>
+            <select id="rating">
+                <option value="1">1⭐</option>
+                <option value="2">2⭐</option>
+                <option value="3">3⭐</option>
+                <option value="4">4⭐</option>
+                <option value="5">5⭐</option>
+            </select>
+        </div>
 
-    <div class="step" id="step3">Этап 3: Напишите отзыв</div>
-    <label for="review" class="bold">Отзыв для выбранного канала:</label>
-    <textarea id="review" rows="6" placeholder="Минимум 70 символов"></textarea>
+        <div class="step" id="step3">
+            <label for="review">Этап 3: Напишите отзыв</label>
+            <textarea id="review" rows="5" placeholder="Минимум 70 символов"></textarea>
+        </div>
 
-    <button onclick="submitReview()">Отправить отзыв</button>
+        <button onclick="submitReview()">Отправить отзыв</button>
+    </div>
 
     <script>
         function submitReview() {
@@ -57,11 +139,7 @@
                 return;
             }
 
-            const data = {
-                channel: channel,
-                rating: rating,
-                review: review
-            };
+            const data = { channel, rating, review };
 
             fetch('https://YOUR_BACKEND_URL/send_review', {
                 method: 'POST',
