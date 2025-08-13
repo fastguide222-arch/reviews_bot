@@ -1,60 +1,80 @@
-from aiogram import Bot, Dispatcher, types
-from aiogram.utils import executor
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Отзывы о каналах</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; }
+        h2 { text-align: center; }
+        label { display: block; margin-top: 15px; }
+        select, textarea, button { width: 100%; padding: 8px; margin-top: 5px; }
+        .bold { font-weight: bold; }
+        .step { margin-top: 20px; padding: 10px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h2>Оставьте отзыв</h2>
 
-TOKEN = "8496471458:AAG-O5Eli7krQx9FKHmpr5jyLnCV5AvP3c0"
+    <div class="step" id="step1">Этап 1: Выберите канал</div>
+    <label for="channel">Канал:</label>
+    <select id="channel">
+        <option value="-1002526285031">Канал 1</option>
+        <option value="-1002716220445">Канал 2</option>
+        <option value="-1002651825180">Канал 3</option>
+        <option value="-1002770818048">Канал 4</option>
+        <option value="-1002622247826">Канал 5</option>
+    </select>
 
-bot = Bot(token=TOKEN)
-dp = Dispatcher(bot)
+    <div class="step" id="step2">Этап 2: Выберите оценку</div>
+    <label for="rating">Оценка:</label>
+    <select id="rating">
+        <option value="1">1⭐</option>
+        <option value="2">2⭐</option>
+        <option value="3">3⭐</option>
+        <option value="4">4⭐</option>
+        <option value="5">5⭐</option>
+    </select>
 
-# Список каналов с айди
-CHANNELS = {
-    "Канал 1": -1002526285031,
-    "Канал 2": -1002716220445,
-    "Канал 3": -1002651825180,
-    "Канал 4": -1002770818048,
-    "Канал 5": -1002622247826,
-}
+    <div class="step" id="step3">Этап 3: Напишите отзыв</div>
+    <label for="review" class="bold">Отзыв для выбранного канала:</label>
+    <textarea id="review" rows="6" placeholder="Минимум 70 символов"></textarea>
 
-# Временное хранилище оценок и отзывов
-user_data = {}
+    <button onclick="submitReview()">Отправить отзыв</button>
 
-# Начало
-@dp.message_handler(commands=['start'])
-async def start(message: types.Message):
-    await message.reply("Привет! Выбери канал для отзыва:\n" + "\n".join(CHANNELS.keys()))
-    user_data[message.from_user.id] = {}
+    <script>
+        function submitReview() {
+            const channel = document.getElementById('channel').value;
+            const rating = parseInt(document.getElementById('rating').value);
+            const review = document.getElementById('review').value.trim();
 
-# Выбор канала
-@dp.message_handler(lambda message: message.text in CHANNELS)
-async def choose_channel(message: types.Message):
-    user_data[message.from_user.id]["channel"] = message.text
-    await message.reply(f"Вы выбрали канал: {message.text}\nСколько звезд ставите? (1-5)")
+            if (review.length < 70) {
+                alert("Отзыв слишком короткий, минимум 70 символов.");
+                return;
+            }
 
-# Выбор оценки
-@dp.message_handler(lambda message: message.text.isdigit() and 1 <= int(message.text) <= 5)
-async def choose_rating(message: types.Message):
-    user_data[message.from_user.id]["rating"] = int(message.text)
-    await message.reply("Напиши отзыв (не менее 70 символов):\n**Отзыв для канала " + user_data[message.from_user.id]["channel"] + "**")
+            if (rating < 4) {
+                alert("Отзывы с оценкой меньше 4⭐ не отправляются.");
+                return;
+            }
 
-# Получение отзыва
-@dp.message_handler(lambda message: len(message.text) >= 70)
-async def get_review(message: types.Message):
-    uid = message.from_user.id
-    channel_name = user_data[uid]["channel"]
-    rating = user_data[uid]["rating"]
-    
-    if rating >= 4:  # Только оценки 4 и 5 отправляем в канал
-        text = f"**Отзыв для канала {channel_name}**\nОценка: {rating}\n{message.text}"
-        await bot.send_message(chat_id=CHANNELS[channel_name], text=text)
-    
-    await message.reply("Спасибо за отзыв!")
-    user_data.pop(uid)
+            const data = {
+                channel: channel,
+                rating: rating,
+                review: review
+            };
 
-# Обработка слишком коротких отзывов
-@dp.message_handler(lambda message: len(message.text) < 70)
-async def too_short(message: types.Message):
-    await message.reply("Отзыв слишком короткий, нужно хотя бы 70 символов.")
-
-if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)
-
+            fetch('https://YOUR_BACKEND_URL/send_review', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                alert("Спасибо за отзыв!");
+                document.getElementById('review').value = "";
+            })
+            .catch(error => console.error('Ошибка:', error));
+        }
+    </script>
+</body>
+</html>
